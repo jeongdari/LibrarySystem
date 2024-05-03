@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Users\\jeong\\OneDrive - Queensland University of Technology\\1.Desktop\\LibraryManagementSystem\\LibraryManagementSystem.csproj": {}
+    "C:\\Users\\jeong\\OneDrive - Queensland University of Technology\\1.Desktop\\LibraryManagementSystem\\LibraryManagementSystem.csproj": {}
   },
   "projects": {
-    "c:\\Users\\jeong\\OneDrive - Queensland University of Technology\\1.Desktop\\LibraryManagementSystem\\LibraryManagementSystem.csproj": {
+    "C:\\Users\\jeong\\OneDrive - Queensland University of Technology\\1.Desktop\\LibraryManagementSystem\\LibraryManagementSystem.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\jeong\\OneDrive - Queensland University of Technology\\1.Desktop\\LibraryManagementSystem\\LibraryManagementSystem.csproj",
+        "projectUniqueName": "C:\\Users\\jeong\\OneDrive - Queensland University of Technology\\1.Desktop\\LibraryManagementSystem\\LibraryManagementSystem.csproj",
         "projectName": "LibraryManagementSystem",
-        "projectPath": "c:\\Users\\jeong\\OneDrive - Queensland University of Technology\\1.Desktop\\LibraryManagementSystem\\LibraryManagementSystem.csproj",
+        "projectPath": "C:\\Users\\jeong\\OneDrive - Queensland University of Technology\\1.Desktop\\LibraryManagementSystem\\LibraryManagementSystem.csproj",
         "packagesPath": "C:\\Users\\jeong\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\jeong\\OneDrive - Queensland University of Technology\\1.Desktop\\LibraryManagementSystem\\obj\\",
+        "outputPath": "C:\\Users\\jeong\\OneDrive - Queensland University of Technology\\1.Desktop\\LibraryManagementSystem\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\jeong\\AppData\\Roaming\\NuGet\\NuGet.Config",
