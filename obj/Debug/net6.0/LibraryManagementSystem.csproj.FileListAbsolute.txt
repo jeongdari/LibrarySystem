@@ -26,3 +26,4 @@ C:\Users\jeong\OneDrive - Queensland University of Technology\1.Desktop\LibraryM
 C:\Users\jeong\OneDrive - Queensland University of Technology\1.Desktop\LibraryManagementSystem\obj\Debug\net6.0\LibraryManagementSystem.pdb
 C:\Users\jeong\OneDrive - Queensland University of Technology\1.Desktop\LibraryManagementSystem\obj\Debug\net6.0\LibraryManagementSystem.genruntimeconfig.cache
 C:\Users\jeong\OneDrive - Queensland University of Technology\1.Desktop\LibraryManagementSystem\obj\Debug\net6.0\ref\LibraryManagementSystem.dll
+c:\Users\jeong\OneDrive - Queensland University of Technology\1.Desktop\LibraryManagementSystem\obj\Debug\net6.0\LibraryManagementSystem.sourcelink.json
