@@ -19,17 +19,23 @@ public class LibrarySystem
     {
         while (true)
         {
-            Console.WriteLine("\nMain Menu");
+            Console.WriteLine("********************************************************");
+            Console.WriteLine("     COMMUNITY LIBRARY MOVIE DVD MANAGEMENT SYSTEM");
+            Console.WriteLine("********************************************************");            
+            Console.WriteLine("\n[Main Menu]");
+            Console.WriteLine("");
             Console.WriteLine("1. Login as Staff");
             Console.WriteLine("2. Login as Member");
             Console.WriteLine("3. Exit");
-
-            Console.Write("Enter option: ");
+            Console.WriteLine("");
+            Console.Write("Enter your choice: ");
             int option;
             if (!int.TryParse(Console.ReadLine(), out option))
             {
-                Console.WriteLine("Invalid input. Please enter a number.");
-                continue;
+                Console.WriteLine("Invalid input. Please enter a number between 1 and 3.");
+                Thread.Sleep(2000);
+                Console.Clear();
+                continue;                
             }
 
             switch (option)
@@ -44,7 +50,9 @@ public class LibrarySystem
                     Console.WriteLine("Exiting...");
                     return;
                 default:
-                    Console.WriteLine("Invalid option. Please try again.");
+                    Console.WriteLine("Invalid option. Please enter a number between 1 and 3.");
+                    Thread.Sleep(2000);
+                    Console.Clear();
                     break;
             }
         }
@@ -52,33 +60,47 @@ public class LibrarySystem
 
     private void StaffLogin()
     {
-        Console.Write("Enter staff username: ");
-        string? username = Console.ReadLine();
+        string? username = null;
 
-        if (string.IsNullOrEmpty(username))
+        while (string.IsNullOrEmpty(username))
         {
-            Console.WriteLine("Username cannot be empty.");
-            return; // or handle the error appropriately
+            Console.Write("Enter staff username: ");
+            username = Console.ReadLine();
+
+            if (string.IsNullOrEmpty(username))
+            {
+                Console.WriteLine("Username cannot be empty. Please enter a username.");
+            }
         }
 
-        Console.Write("Enter staff password: ");
-        string? password = Console.ReadLine();
+        string? password = null;
 
-        if (string.IsNullOrEmpty(password))
+        while (string.IsNullOrEmpty(password))
         {
-            Console.WriteLine("Password cannot be empty.");
-            return; // or handle the error appropriately
-        }
+            Console.Write("Enter staff password: ");
+            password = Console.ReadLine();
 
+            if (string.IsNullOrEmpty(password))
+            {
+                Console.WriteLine("Password cannot be empty. Please enter a password.");
+            }
+        }
+        
         // Proceed with staff authentication using username and password
         if (username == "staff" && password == "today123")
         {
-            Console.WriteLine("Staff login successful.");
+            Console.WriteLine("");
+            Console.WriteLine("Staff login successful!");
+            Thread.Sleep(2000);
+            Console.Clear();
             StaffMenu();
         }
         else
         {
+            Console.WriteLine("");
             Console.WriteLine("Invalid username or password.");
+            Thread.Sleep(2000);
+            Console.Clear();
         }
     }
 
@@ -87,7 +109,8 @@ public class LibrarySystem
     {
         while (true)
         {
-            Console.WriteLine("\nStaff Menu");
+            Console.WriteLine("\n[Staff Menu]");
+            Console.WriteLine("");
             Console.WriteLine("1. Add Movie DVDs");
             Console.WriteLine("2. Remove Movie DVDs");
             Console.WriteLine("3. Register New Member");
@@ -96,11 +119,13 @@ public class LibrarySystem
             Console.WriteLine("6. Display Members Renting a Movie");
             Console.WriteLine("7. Return to Main Menu");
 
-            Console.Write("Enter option: ");
+            Console.Write("\nEnter your choice: ");
             int option;
             if (!int.TryParse(Console.ReadLine(), out option))
             {
-                Console.WriteLine("Invalid input. Please enter a number.");
+                Console.WriteLine("\nInvalid input. Please enter a number between 1 and 7.");
+                Thread.Sleep(2000);
+                Console.Clear();
                 continue;
             }
 
@@ -108,18 +133,24 @@ public class LibrarySystem
             {
                 case 1:
                     // Implement Add Movie DVDs functionality
-                    Console.Write("Enter movie title: ");
-                    string? title = Console.ReadLine();
+                    Console.Write("\n<Add Movie DVDs>");
+                    
+                    string? title = null;
 
-                    if (string.IsNullOrEmpty(title)) // Check if title is null or empty
+                    while (string.IsNullOrEmpty(title))
                     {
-                        Console.WriteLine("Invalid title. Please enter a valid movie title.");
-                        continue;
+                        Console.Write("\n1) Enter movie title: ");
+                        title = Console.ReadLine();
+
+                        if (string.IsNullOrEmpty(title))
+                        {
+                            Console.WriteLine("Title cannot be empty. Please enter a title.");
+                        }
                     }
 
                     // Validate genre input
                     Genre genre;
-                    Console.WriteLine("Enter genre (drama, adventure, family, action, sci-fi, comedy, animated, thriller, other): ");
+                    Console.WriteLine("2) Enter genre (drama, adventure, family, action, sci-fi, comedy, animated, thriller, other): ");
                     if (!Enum.TryParse(Console.ReadLine(), true, out genre) || !Enum.IsDefined(typeof(Genre), genre))
                     {
                         Console.WriteLine("Invalid genre. Please enter a valid genre from the provided list.");
@@ -128,21 +159,21 @@ public class LibrarySystem
 
                     // Validate classification input
                     Classification classification;
-                    Console.WriteLine("Enter classification (G, PG, M15Plus, MA15Plus): ");
+                    Console.WriteLine("3) Enter classification (G, PG, M15Plus, MA15Plus): ");
                     if (!Enum.TryParse(Console.ReadLine(), true, out classification) || !Enum.IsDefined(typeof(Classification), classification))
                     {
                         Console.WriteLine("Invalid classification. Please enter a valid classification from the provided list.");
                         continue;
                     }
 
-                    Console.Write("Enter duration (in minutes): ");
+                    Console.Write("4) Enter duration (in minutes): ");
                     if (!int.TryParse(Console.ReadLine(), out int durationMinutes))
                     {
                         Console.WriteLine("Invalid duration. Please enter a valid number.");
                         continue;
                     }
 
-                    Console.Write("Enter number of copies: ");
+                    Console.Write("5) Enter number of copies: ");
                     if (!int.TryParse(Console.ReadLine(), out int numCopies))
                     {
                         Console.WriteLine("Invalid number of copies. Please enter a valid number.");
@@ -154,6 +185,7 @@ public class LibrarySystem
                     break;
                 case 2:
                     // Implement Remove Movie DVDs functionality
+                    Console.Write("\n<Remove Movie DVDs>");
                     Console.Write("Enter movie title: ");
                     string? removeTitle = Console.ReadLine();
 
@@ -178,6 +210,7 @@ public class LibrarySystem
                     break;
                 case 3:
                     // Implement Register New Member functionality
+                    Console.Write("\n<Register New Member>");
                     Console.Write("Enter first name: ");
                     string? firstName = Console.ReadLine();
                     Console.Write("Enter last name: ");
@@ -211,6 +244,7 @@ public class LibrarySystem
                     break;
                 case 4:
                     // Implement Remove Registered Member functionality
+                    Console.Write("\n<Remove Registered Member>");
                     Console.Write("Enter member's first name: ");
                     string? removeFirstName = Console.ReadLine();
 
@@ -229,6 +263,7 @@ public class LibrarySystem
                     break;
                 case 5:
                     // Implement Find Member's Contact Number functionality
+                    Console.Write("\n<Find Member's Contact Number>");
                     Console.Write("Enter member's first name: ");
                     string? findFirstName = Console.ReadLine();
 
@@ -256,6 +291,7 @@ public class LibrarySystem
                     break;
                 case 6:
                     // Implement Display Members Renting a Movie functionality
+                    Console.Write("\n<Display Members Renting a Movie>");
                     Console.Write("Enter movie title to display renting members: ");
                     string? movieTitle = Console.ReadLine();
 
@@ -333,7 +369,7 @@ public class LibrarySystem
             Console.WriteLine("6. Display Top Three Most Borrowed Movies");
             Console.WriteLine("7. Return to Main Menu");
 
-            Console.Write("Enter option: ");
+            Console.Write("Enter your choice: ");
             int option;
             if (!int.TryParse(Console.ReadLine(), out option))
             {
