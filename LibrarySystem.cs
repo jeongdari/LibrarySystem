@@ -124,9 +124,10 @@ public class LibrarySystem
         string title = InputHelper.GetNonEmptyInput("Enter movie title: ");
 
         // Check if the movie already exists in the library
-        Movie existingMovie = movieCollection.FindMovieByTitle(title);
+        Movie? existingMovie = movieCollection.FindMovieByTitle(title);
         if (existingMovie != null)
         {
+            Console.WriteLine ("The movie you are trying to add already exists, so you only add the number of new copies.");
             int numCopies = InputHelper.GetPositiveIntInput("How many copies do you want to add? ");
 
             // Update copies of the existing movie
@@ -148,23 +149,49 @@ public class LibrarySystem
         movieCollection.AddMovie(title, genre, classification, durationMinutes, numCopies);
     }
     private void RemoveMovieDVD()
+{
+    Console.WriteLine("\n<Remove Movie DVDs>");
+
+    string removeTitle = InputHelper.GetNonEmptyInput("Enter movie title: ");
+
+    // Check if the movie exists in the library
+    Movie? movieToRemove = movieCollection.FindMovieByTitle(removeTitle);
+    if (movieToRemove == null)
     {
-        Console.WriteLine("\n<Remove Movie DVDs>");
+        Console.WriteLine($"Movie '{removeTitle}' not found in the library.");
+        return;
+    }
 
-        string removeTitle = InputHelper.GetNonEmptyInput("Enter movie title: ");
-        int removeNumCopies = InputHelper.GetPositiveIntInput("Enter number of copies to remove: ");
+    int availableCopies = movieToRemove.CopiesAvailable;
+while (true) // Loop until a valid number of copies to remove is entered
+    {
+        // Prompt user to input number of copies to remove
+        int removeNumCopies = InputHelper.GetPositiveIntInput($"Enter number of copies to remove (Available Copies: {availableCopies}): ");
 
-        bool success = movieCollection.RemoveMovie(removeTitle, removeNumCopies);
-
-        if (success)
+        // Validate the number of copies to remove
+        if (removeNumCopies > availableCopies)
         {
-            Console.WriteLine($"Successfully removed {removeNumCopies} copies of '{removeTitle}'.");
+            Console.WriteLine($"Error: You can only remove up to {availableCopies} copies for '{removeTitle}'.");
         }
         else
         {
-            Console.WriteLine($"Failed to remove {removeNumCopies} copies of '{removeTitle}'. Movie not found.");
+            // Attempt to remove the specified number of copies
+            bool success = movieCollection.RemoveMovie(removeTitle, removeNumCopies);
+
+            if (success)
+            {
+                Console.WriteLine($"Successfully removed {removeNumCopies} copies of '{removeTitle}'.");
+            }
+            else
+            {
+                Console.WriteLine($"Failed to remove {removeNumCopies} copies of '{removeTitle}'. Movie not found.");
+            }
+
+            break; // Exit the loop since a valid operation was performed
         }
     }
+}
+
     private void RegisterNewMember()
     {
         Console.WriteLine("\n<Register New Member>");

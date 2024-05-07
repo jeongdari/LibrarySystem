@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "zXc077KrOM9Y0nu1NQQAVOdagdXMKfMAffxLqpwpjy/ZTw23qwxwInLeQn2Ni2wDC5Rj7AKmLMfNXhMqcWiDhg==",
+  "dgSpecHash": "O8cpucKkg8Zb39kIp1T6X+gjlCl6I/P16hnA4dlcCxDlqqB8nGRTyIcGvS7rHn9Yri9NKbjB04Qhnko0XCy5kw==",
   "success": true,
   "projectFilePath": "/Users/danny/Desktop/LibrarySystem-master/LibraryManagementSystem.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "/Users/danny/.nuget/packages/consoletables/2.6.1/consoletables.2.6.1.nupkg.sha512"
+  ],
   "logs": []
 }

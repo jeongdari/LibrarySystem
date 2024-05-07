@@ -12,3 +12,6 @@
 /Users/danny/Desktop/LibrarySystem-master/obj/Debug/net8.0/LibraryManagementSystem.pdb
 /Users/danny/Desktop/LibrarySystem-master/obj/Debug/net8.0/LibraryManagementSystem.genruntimeconfig.cache
 /Users/danny/Desktop/LibrarySystem-master/obj/Debug/net8.0/ref/LibraryManagementSystem.dll
+/Users/danny/Desktop/LibrarySystem-master/bin/Debug/net8.0/ConsoleTables.dll
+/Users/danny/Desktop/LibrarySystem-master/obj/Debug/net8.0/LibraryManagementSystem.csproj.AssemblyReference.cache
+/Users/danny/Desktop/LibrarySystem-master/obj/Debug/net8.0/LibraryM.4D120AE7.Up2Date
