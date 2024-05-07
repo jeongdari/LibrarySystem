@@ -102,6 +102,9 @@ public class LibrarySystem
 
     private void DisplayStaffMenu()
     {
+        Console.WriteLine("\n********************************************************");
+        Console.WriteLine("     COMMUNITY LIBRARY MOVIE DVD MANAGEMENT SYSTEM");
+        Console.WriteLine("********************************************************");
         Console.WriteLine("\n[Staff Menu]");
         Console.WriteLine("");
         Console.WriteLine("1. Add Movie DVDs");
@@ -115,37 +118,35 @@ public class LibrarySystem
     }
 
     private void AddMovieDVD()
-{
-    Console.WriteLine("\n<Add Movie DVDs>");
-
-    string title = InputHelper.GetNonEmptyInput("Enter movie title: ");
-
-    // Check if the movie already exists in the library
-    Movie existingMovie = movieCollection.FindMovieByTitle(title);
-    if (existingMovie != null)
     {
-        int numCopies = InputHelper.GetPositiveIntInput("How many copies do you want to add? ");
+        Console.WriteLine("\n<Add Movie DVDs>");
 
-        // Update copies of the existing movie
-        movieCollection.AddMovieCopies(title, numCopies);
-        Console.WriteLine($"Added {numCopies} copies of '{title}' to the library.");
+        string title = InputHelper.GetNonEmptyInput("Enter movie title: ");
+
+        // Check if the movie already exists in the library
+        Movie existingMovie = movieCollection.FindMovieByTitle(title);
+        if (existingMovie != null)
+        {
+            int numCopies = InputHelper.GetPositiveIntInput("How many copies do you want to add? ");
+
+            // Update copies of the existing movie
+            movieCollection.AddMovieCopies(title, numCopies);
+        }
+        else
+        {
+            // Prompt for genre, classification, duration, and number of copies to add a new movie
+            AddNewMovie(title);
+        }
     }
-    else
+    private void AddNewMovie(string title)
     {
-        // Prompt for genre, classification, duration, and number of copies to add a new movie
-        AddNewMovie(title);
-    }
-}
-private void AddNewMovie(string title)
-{
-    Genre genre = InputHelper.GetGenreInput();
-    Classification classification = InputHelper.GetClassificationInput();
-    int durationMinutes = InputHelper.GetPositiveIntInput("Enter duration (in minutes): ");
-    int numCopies = InputHelper.GetPositiveIntInput("Enter number of copies: ");
+        Genre genre = InputHelper.GetGenreInput();
+        Classification classification = InputHelper.GetClassificationInput();
+        int durationMinutes = InputHelper.GetPositiveIntInput("Enter duration (in minutes): ");
+        int numCopies = InputHelper.GetPositiveIntInput("Enter number of copies: ");
 
-    movieCollection.AddMovie(title, genre, classification, durationMinutes, numCopies);
-    Console.WriteLine($"'{title}' added to the library with {numCopies} copies.");
-}
+        movieCollection.AddMovie(title, genre, classification, durationMinutes, numCopies);
+    }
     private void RemoveMovieDVD()
     {
         Console.WriteLine("\n<Remove Movie DVDs>");
@@ -245,7 +246,7 @@ private void AddNewMovie(string title)
     {
         while (true)
         {
-            DisplayMemberMenu();
+            DisplayMemberMenu(member.FirstName, member.LastName);
             int option = InputHelper.GetIntInput("Enter your choice: ", 1, 7);
 
             switch (option)
@@ -266,7 +267,7 @@ private void AddNewMovie(string title)
                     ReturnMovie(member);
                     break;
                 case 5:
-                    ListCurrentBorrowingMovies();
+                    ListCurrentBorrowingMovies(member);
                     break;
                 case 6:
                     DisplayTopThreeMostBorrowedMovies();
@@ -277,9 +278,14 @@ private void AddNewMovie(string title)
         }
     }
 
-    private void DisplayMemberMenu()
+    private void DisplayMemberMenu(string firstName, string lastName)
     {
-        Console.WriteLine("\nMember Menu");
+        string memberFullName = $"{firstName} {lastName}";
+        Console.WriteLine("\n********************************************************");
+        Console.WriteLine("     COMMUNITY LIBRARY MOVIE DVD MANAGEMENT SYSTEM");
+        Console.WriteLine("********************************************************");
+        Console.WriteLine($"\n[Member Menu for {memberFullName}]");
+        Console.WriteLine("");
         Console.WriteLine("1. Browse All Movies");
         Console.WriteLine("2. Display Movie Information");
         Console.WriteLine("3. Borrow a Movie DVD");
@@ -322,24 +328,24 @@ private void AddNewMovie(string title)
         }
     }
 
-    private void ListCurrentBorrowingMovies()
-    {
-        Console.WriteLine("\n<List Current Borrowing Movies>");
-        LinkedList<Movie> borrowingMovies = movieCollection.GetBorrowingMovies();
+    private void ListCurrentBorrowingMovies(Member currentMember)
+{
+    Console.WriteLine("\n<List Current Borrowing Movies>");
+    var borrowingMovies = movieCollection.GetBorrowingMovies(currentMember);
 
-        if (borrowingMovies.Count > 0)
+    if (borrowingMovies.Count > 0)
+    {
+        Console.WriteLine("Movies currently being borrowed:");
+        foreach (var movie in borrowingMovies)
         {
-            Console.WriteLine("Movies currently being borrowed:");
-            foreach (var movie in borrowingMovies)
-            {
-                Console.WriteLine($"Title: {movie.Title}, Genre: {movie.MovieGenre}, Classification: {movie.MovieClassification}");
-            }
-        }
-        else
-        {
-            Console.WriteLine("You are currently not borrowing any movies.");
+            Console.WriteLine($"Title: {movie.Title}, Genre: {movie.MovieGenre}, Classification: {movie.MovieClassification}");
         }
     }
+    else
+    {
+        Console.WriteLine("You are currently not borrowing any movies.");
+    }
+}
 
     private void DisplayTopThreeMostBorrowedMovies()
     {

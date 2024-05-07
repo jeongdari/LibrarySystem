@@ -56,26 +56,35 @@ public class MemberCollection
     }
 
     public bool DisplayMembersRentingMovie(string movieTitle)
+{
+    bool movieExists = false;
+    bool anyRenters = false;
+
+    // Check if the movie exists in the library
+    foreach (var member in members)
     {
-        bool movieFound = false;
-        bool anyRenters = false;
-
-        foreach (var member in members)
+        if (member.HasBorrowedMovieByTitle(movieTitle))
         {
-            if (member.HasBorrowedMovieByTitle(movieTitle))
-            {
-                Console.WriteLine($"Members renting '{movieTitle}': {member.FirstName} {member.LastName}");
-                anyRenters = true;
-            }
+            // Movie exists if at least one member has borrowed it
+            movieExists = true;
+            Console.WriteLine($"Members renting '{movieTitle}': {member.FirstName} {member.LastName}");
+            anyRenters = true;
         }
-
-        if (!anyRenters)
-        {
-            Console.WriteLine($"No one has borrowed the movie '{movieTitle}'.");
-        }
-
-        movieFound = anyRenters; // Movie is found if there are any renters
-
-        return movieFound;
     }
+
+    // If the movie doesn't exist, output a message
+    if (!movieExists)
+    {
+        Console.WriteLine($"The movie '{movieTitle}' is not found in the library.");
+    }
+    else if (!anyRenters)
+    {
+        // If movie exists but no one has borrowed it, output a message
+        Console.WriteLine($"No one has borrowed the movie '{movieTitle}'.");
+    }
+
+    return anyRenters; // Return whether there are any renters for the movie
+}
+
+
 }

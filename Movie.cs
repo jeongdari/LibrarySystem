@@ -20,6 +20,7 @@ public class Movie
     public Genre MovieGenre { get; }
     public Classification MovieClassification { get; }
     public int DurationMinutes { get; }
+    public Member? Borrower { get; set; }
     public int TotalCopies { get; private set; }
     public int CopiesAvailable { get; private set; }
     public int TimesBorrowed { get; private set; }
@@ -33,6 +34,7 @@ public class Movie
         TotalCopies = totalCopies;
         CopiesAvailable = totalCopies;
         TimesBorrowed = 0;
+        Borrower = null;
     }
 
     public void AddCopies(int numCopiesToAdd)

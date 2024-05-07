@@ -47,8 +47,7 @@ public class Member
             return false;
         }
 
-        BorrowedMovies.Add(movie);
-        Console.WriteLine($"'{movie.Title}' borrowed successfully.");
+        BorrowedMovies.Add(movie);        
         return true;
     }
 

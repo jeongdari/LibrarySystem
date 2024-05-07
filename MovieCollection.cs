@@ -151,9 +151,17 @@ public class MovieCollection
                     return null;
                 }
 
+                // Check if the member has reached the borrowing limit
+                if (member.BorrowedMovies.Count >= 5)
+                {
+                    Console.WriteLine("Maximum borrowing limit (5 movies) reached.");
+                    return null;
+                }
+
                 // Borrow the movie
                 movieToBorrow.BorrowCopy();
                 member.BorrowMovie(movieToBorrow); // Add the movie to the member's borrowed list
+                movieToBorrow.Borrower = member; // Set the borrower to the member who borrowed the movie
                 return movieToBorrow;
             }
         }
@@ -161,6 +169,7 @@ public class MovieCollection
         Console.WriteLine($"Movie '{title}' not available for borrowing.");
         return null;
     }
+
 
     public void ReturnMovie(Movie movie)
     {
@@ -176,11 +185,13 @@ public class MovieCollection
         }
     }
 
-    public LinkedList<Movie> GetBorrowingMovies()
-    {
-        var borrowingMovies = hashTable.SelectMany(pair => pair.Value.Where(m => m.CopiesAvailable < m.TotalCopies));
-        return new LinkedList<Movie>(borrowingMovies);
-    }
+    public LinkedList<Movie> GetBorrowingMovies(Member member)
+{
+    var borrowingMovies = hashTable.SelectMany(pair => pair.Value.Where(m => m.CopiesAvailable < m.TotalCopies && member.HasBorrowedMovie(m)));
+
+    return new LinkedList<Movie>(borrowingMovies);
+}
+
 
     public LinkedList<Movie> GetMostFrequentlyBorrowedMovies(int topCount)
     {
