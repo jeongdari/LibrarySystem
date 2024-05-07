@@ -1,4 +1,5 @@
 ﻿using System;
+using ConsoleTables;
 using System.Threading;
 
 public class LibrarySystem
@@ -127,7 +128,7 @@ public class LibrarySystem
         Movie? existingMovie = movieCollection.FindMovieByTitle(title);
         if (existingMovie != null)
         {
-            Console.WriteLine ("The movie you are trying to add already exists, so you only add the number of new copies.");
+            Console.WriteLine("The movie you are trying to add already exists, so you only add the number of new copies.");
             int numCopies = InputHelper.GetPositiveIntInput("How many copies do you want to add? ");
 
             // Update copies of the existing movie
@@ -138,7 +139,7 @@ public class LibrarySystem
             // Prompt for genre, classification, duration, and number of copies to add a new movie
             AddNewMovie(title);
         }
-        movieCollection.DisplayKeyLocation(title);        
+        movieCollection.DisplayKeyLocation(title);
     }
     private void AddNewMovie(string title)
     {
@@ -150,48 +151,48 @@ public class LibrarySystem
         movieCollection.AddMovie(title, genre, classification, durationMinutes, numCopies);
     }
     private void RemoveMovieDVD()
-{
-    Console.WriteLine("\n<Remove Movie DVDs>");
-
-    string removeTitle = InputHelper.GetNonEmptyInput("Enter movie title: ");
-
-    // Check if the movie exists in the library
-    Movie? movieToRemove = movieCollection.FindMovieByTitle(removeTitle);
-    if (movieToRemove == null)
     {
-        Console.WriteLine($"Movie '{removeTitle}' not found in the library.");
-        return;
-    }
+        Console.WriteLine("\n<Remove Movie DVDs>");
 
-    int availableCopies = movieToRemove.CopiesAvailable;
-while (true) // Loop until a valid number of copies to remove is entered
-    {
-        // Prompt user to input number of copies to remove
-        int removeNumCopies = InputHelper.GetPositiveIntInput($"Enter number of copies to remove (Available Copies: {availableCopies}): ");
+        string removeTitle = InputHelper.GetNonEmptyInput("Enter movie title: ");
 
-        // Validate the number of copies to remove
-        if (removeNumCopies > availableCopies)
+        // Check if the movie exists in the library
+        Movie? movieToRemove = movieCollection.FindMovieByTitle(removeTitle);
+        if (movieToRemove == null)
         {
-            Console.WriteLine($"Error: You can only remove up to {availableCopies} copies for '{removeTitle}'.");
+            Console.WriteLine($"Movie '{removeTitle}' not found in the library.");
+            return;
         }
-        else
-        {
-            // Attempt to remove the specified number of copies
-            bool success = movieCollection.RemoveMovie(removeTitle, removeNumCopies);
 
-            if (success)
+        int availableCopies = movieToRemove.CopiesAvailable;
+        while (true) // Loop until a valid number of copies to remove is entered
+        {
+            // Prompt user to input number of copies to remove
+            int removeNumCopies = InputHelper.GetPositiveIntInput($"Enter number of copies to remove (Available Copies: {availableCopies}): ");
+
+            // Validate the number of copies to remove
+            if (removeNumCopies > availableCopies)
             {
-                Console.WriteLine($"Successfully removed {removeNumCopies} copies of '{removeTitle}'.");
+                Console.WriteLine($"Error: You can only remove up to {availableCopies} copies for '{removeTitle}'.");
             }
             else
             {
-                Console.WriteLine($"Failed to remove {removeNumCopies} copies of '{removeTitle}'. Movie not found.");
-            }
+                // Attempt to remove the specified number of copies
+                bool success = movieCollection.RemoveMovie(removeTitle, removeNumCopies);
 
-            break; // Exit the loop since a valid operation was performed
+                if (success)
+                {
+                    Console.WriteLine($"Successfully removed {removeNumCopies} copies of '{removeTitle}'.");
+                }
+                else
+                {
+                    Console.WriteLine($"Failed to remove {removeNumCopies} copies of '{removeTitle}'. Movie not found.");
+                }
+
+                break; // Exit the loop since a valid operation was performed
+            }
         }
     }
-}
 
     private void RegisterNewMember()
     {
@@ -343,7 +344,7 @@ while (true) // Loop until a valid number of copies to remove is entered
             if (success)
             {
                 // If movie is successfully returned by the member, update the movie collection
-                movieCollection.ReturnMovie(movieToReturn);                
+                movieCollection.ReturnMovie(movieToReturn);
             }
             else
             {
@@ -357,23 +358,27 @@ while (true) // Loop until a valid number of copies to remove is entered
     }
 
     private void ListCurrentBorrowingMovies(Member currentMember)
-{
-    Console.WriteLine("\n<List Current Borrowing Movies>");
-    var borrowingMovies = movieCollection.GetBorrowingMovies(currentMember);
-
-    if (borrowingMovies.Count > 0)
     {
-        Console.WriteLine("Movies currently being borrowed:");
-        foreach (var movie in borrowingMovies)
+        Console.WriteLine("\n<List Current Borrowing Movies>");
+        var borrowingMovies = movieCollection.GetBorrowingMovies(currentMember);
+
+        if (borrowingMovies.Count > 0)
         {
-            Console.WriteLine($"Title: {movie.Title}, Genre: {movie.MovieGenre}, Classification: {movie.MovieClassification}");
+            Console.WriteLine("Movies currently being borrowed:");
+            var table = new ConsoleTable("Title", "Genre", "Classification");
+
+            foreach (var movie in borrowingMovies)
+            {
+                table.AddRow(movie.Title, movie.MovieGenre, movie.MovieClassification);
+            }
+
+            table.Write(Format.Default);
+        }
+        else
+        {
+            Console.WriteLine("You are currently not borrowing any movies.");
         }
     }
-    else
-    {
-        Console.WriteLine("You are currently not borrowing any movies.");
-    }
-}
 
     private void DisplayTopThreeMostBorrowedMovies()
     {
@@ -385,11 +390,13 @@ while (true) // Loop until a valid number of copies to remove is entered
         if (topBorrowedMovies.Count > 0)
         {
             int rank = 1;
+            var table = new ConsoleTable("Rank", "Title", "Genre", "Classification", "Times Borrowed");
             foreach (var movie in topBorrowedMovies)
             {
-                Console.WriteLine($"Rank.{rank}: Title: {movie.Title}, Genre: {movie.MovieGenre}, Classification: {movie.MovieClassification}, Times Borrowed: {movie.TimesBorrowed}");
+               table.AddRow(rank, movie.Title, movie.MovieGenre, movie.MovieClassification, movie.TimesBorrowed);
                 rank++;
             }
+            table.Write(Format.Default);
         }
         else
         {
