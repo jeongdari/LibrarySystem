@@ -244,7 +244,6 @@ while (true) // Loop until a valid number of copies to remove is entered
         string movieTitle = InputHelper.GetNonEmptyInput("Enter movie title to display renting members: ");
 
         bool movieFound = memberCollection.DisplayMembersRentingMovie(movieTitle);
-
         if (!movieFound)
         {
             Console.WriteLine($"The movie '{movieTitle}' is not found in the library.");
@@ -327,15 +326,6 @@ while (true) // Loop until a valid number of copies to remove is entered
         Console.WriteLine("\n<Borrow a Movie DVD>");
         string movieTitleToBorrow = InputHelper.GetNonEmptyInput("Enter movie title to borrow: ");
         Movie? borrowedMovie = movieCollection.BorrowMovie(member, movieTitleToBorrow);
-
-        if (borrowedMovie != null)
-        {
-            Console.WriteLine($"Successfully borrowed '{borrowedMovie.Title}'. Enjoy watching!");
-        }
-        else
-        {
-            Console.WriteLine($"Sorry, '{movieTitleToBorrow}' is not available for borrowing.");
-        }
     }
 
     private void ReturnMovie(Member member)
@@ -346,8 +336,18 @@ while (true) // Loop until a valid number of copies to remove is entered
 
         if (movieToReturn != null)
         {
-            movieCollection.ReturnMovie(movieToReturn);
-            Console.WriteLine($"Successfully returned '{movieToReturn.Title}'. Thank you!");
+            // Attempt to return the movie using the member's ReturnMovie method
+            bool success = member.ReturnMovie(movieToReturn);
+
+            if (success)
+            {
+                // If movie is successfully returned by the member, update the movie collection
+                movieCollection.ReturnMovie(movieToReturn);                
+            }
+            else
+            {
+                Console.WriteLine($"Unexpected error occurred while returning '{movieToReturn.Title}'.");
+            }
         }
         else
         {

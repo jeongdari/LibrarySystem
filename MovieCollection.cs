@@ -140,7 +140,7 @@ public class MovieCollection
     // Check if the movie exists in the library
     if (!hashTable.ContainsKey(hash) || hashTable[hash].All(m => m.Title != title))
     {
-        Console.WriteLine($"Error: Movie '{title}' not available for borrowing.");
+        Console.WriteLine($"\nError: Movie '{title}' does not exist in the library.");
         return null;
     }
 
@@ -151,21 +151,21 @@ public class MovieCollection
 
         if (movieToBorrow == null)
         {
-            Console.WriteLine($"Error: Movie '{title}' is not available for borrowing.");
+            Console.WriteLine($"\nError: Movie '{title}' is not available for borrowing.");
             return null; // No valid movie to borrow, exit method
         }
 
         // Check if the member has already borrowed this movie
         if (member.HasBorrowedMovie(movieToBorrow))
         {
-            Console.WriteLine("Error: You have already borrowed this movie.");
+            Console.WriteLine("\nError: You have already borrowed this movie.");
             return null; // Member already borrowed this movie, exit method
         }
 
         // Check if the member has reached the borrowing limit
         if (member.BorrowedMovies.Count >= 5)
         {
-            Console.WriteLine("Error: Maximum borrowing limit (5 movies) reached.");
+            Console.WriteLine("\nError: Maximum borrowing limit (5 movies) reached. \nIf you wish to borrow a new movie, please return one of the movies you have borrowed.");
             return null; // Member reached borrowing limit, exit method
         }
 
@@ -187,7 +187,7 @@ public class MovieCollection
 
         if (!hashTable.ContainsKey(hash) || hashTable[hash].All(m => m.Title != movie.Title))
         {
-            Console.WriteLine($"Error: Movie '{movie.Title}' not found in the library.");
+            Console.WriteLine($"\nError: Movie '{movie.Title}' not found in the library.");
             return;
         }
 
@@ -207,7 +207,9 @@ public class MovieCollection
     public LinkedList<Movie> GetMostFrequentlyBorrowedMovies(int topCount)
     {
         var allMovies = hashTable.SelectMany(pair => pair.Value);
-        var sortedMovies = allMovies.OrderByDescending(m => m.TimesBorrowed).Take(topCount);
+        var sortedMovies = allMovies.Where(m => m.TimesBorrowed > 0)
+                                .OrderByDescending(m => m.TimesBorrowed)
+                                .Take(topCount);
         return new LinkedList<Movie>(sortedMovies);
     }
     public Movie? FindMovieByTitle(string title)

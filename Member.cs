@@ -56,7 +56,7 @@ public class Member
         if (BorrowedMovies.Contains(movie))
         {
             BorrowedMovies.Remove(movie);
-            Console.WriteLine($"'{movie.Title}' returned successfully.");
+            Console.WriteLine($"Successfully returned '{movie.Title}'. Thank you!");
             return true;
         }
 
