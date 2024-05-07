@@ -46,14 +46,14 @@ public class MovieCollection
         {
             // This method is responsible for adding copies to an existing movie
             existingMovie.AddCopies(numCopies);
-            Console.WriteLine($"Added {numCopies} copies of '{title}' to the library.");
+            Console.WriteLine($"\nAdded {numCopies} copies of '{title}' to the library.");
         }
         else
         {
             // Create a new movie object and add it to the linked list
             Movie newMovie = new Movie(title, genre, classification, durationMinutes, numCopies);
             hashTable[hash].AddLast(newMovie);
-            Console.WriteLine($"'{title}' added to the library with {numCopies} copies.");
+            Console.WriteLine($"\n'{title}' added to the library with {numCopies} copies.");
         }
     }
 
@@ -134,50 +134,71 @@ public class MovieCollection
     }
 
     public Movie? BorrowMovie(Member member, string title)
-{
-    int hash = CalculateHash(title);
-
-    // Check if the movie exists in the library
-    if (!hashTable.ContainsKey(hash) || hashTable[hash].All(m => m.Title != title))
     {
-        Console.WriteLine($"\nError: Movie '{title}' does not exist in the library.");
-        return null;
+        while (true) // Loop until a valid movie is borrowed or user cancels
+        {
+            int hash = CalculateHash(title);
+
+            // Check if the movie exists in the library
+            if (!hashTable.ContainsKey(hash) || hashTable[hash].All(m => m.Title != title))
+            {
+                Console.WriteLine($"\nError: Movie '{title}' does not exist in the library.");
+                Console.WriteLine("Please enter a valid movie title or type 'Q' to exit:");
+                title = Console.ReadLine(); // Prompt user to enter a valid movie title or cancel
+                if (title.ToUpper() == "Q")
+                {
+                    Console.WriteLine("Borrowing operation canceled.");
+                    return null; 
+                }
+                continue;
+            }
+
+            // Find the movie to borrow
+            Movie? movieToBorrow = hashTable[hash].FirstOrDefault(m => m.Title == title && m.CopiesAvailable > 0);
+
+            if (movieToBorrow == null)
+            {
+                Console.WriteLine($"\nError: Movie '{title}' is not available for borrowing since all the copies are rented.");
+                Console.WriteLine("Please enter a valid movie title or type 'Q' to exit:");
+                title = Console.ReadLine(); // Prompt user to enter a different movie title or cancel
+                if (title.ToUpper() == "Q")
+                {
+                    Console.WriteLine("Borrowing operation canceled.");
+                    return null; 
+                }
+                continue;
+            }
+
+            // Check if the member has already borrowed this movie
+            if (member.HasBorrowedMovie(movieToBorrow))
+            {
+                Console.WriteLine("\nError: You have already borrowed this movie.");
+                Console.WriteLine("Please enter a valid movie title or type 'Q' to exit:");
+                title = Console.ReadLine(); // Prompt user to enter a different movie title or cancel
+                if (title.ToUpper() == "Q")
+                {
+                    Console.WriteLine("Borrowing operation canceled.");
+                    return null; 
+                }
+                continue;
+            }
+
+            // Check if the member has reached the borrowing limit
+            if (member.BorrowedMovies.Count >= 5)
+            {
+                Console.WriteLine("\nError: Maximum borrowing limit (5 movies) reached. \nIf you wish to borrow a new movie, please return one of the movies you have borrowed.");
+                return null; // Member reached borrowing limit, exit method
+            }
+
+            // Attempt to borrow the movie
+            movieToBorrow.BorrowCopy();
+            member.BorrowMovie(movieToBorrow); // Add the movie to the member's borrowed list
+            movieToBorrow.Borrower = member; // Set the borrower to the member who borrowed the movie
+
+            Console.WriteLine($"Successfully borrowed '{movieToBorrow.Title}'. Enjoy watching!");
+            return movieToBorrow; // Return the borrowed movie
+        }
     }
-
-    while (true) // Loop until a valid movie is borrowed or user cancels
-    {
-        // Find the movie to borrow
-        Movie? movieToBorrow = hashTable[hash].FirstOrDefault(m => m.Title == title && m.CopiesAvailable > 0);
-
-        if (movieToBorrow == null)
-        {
-            Console.WriteLine($"\nError: Movie '{title}' is not available for borrowing.");
-            return null; // No valid movie to borrow, exit method
-        }
-
-        // Check if the member has already borrowed this movie
-        if (member.HasBorrowedMovie(movieToBorrow))
-        {
-            Console.WriteLine("\nError: You have already borrowed this movie.");
-            return null; // Member already borrowed this movie, exit method
-        }
-
-        // Check if the member has reached the borrowing limit
-        if (member.BorrowedMovies.Count >= 5)
-        {
-            Console.WriteLine("\nError: Maximum borrowing limit (5 movies) reached. \nIf you wish to borrow a new movie, please return one of the movies you have borrowed.");
-            return null; // Member reached borrowing limit, exit method
-        }
-
-        // Attempt to borrow the movie
-        movieToBorrow.BorrowCopy();
-        member.BorrowMovie(movieToBorrow); // Add the movie to the member's borrowed list
-        movieToBorrow.Borrower = member; // Set the borrower to the member who borrowed the movie
-
-        Console.WriteLine($"Successfully borrowed '{movieToBorrow.Title}'. Enjoy watching!");
-        return movieToBorrow; // Return the borrowed movie
-    }
-}
 
 
 
@@ -226,4 +247,39 @@ public class MovieCollection
         }
         return null;
     }
+
+    public void DisplayKeyLocation(string title) // Use Star Wars and foaa for collision
+    {
+        int hash = CalculateHash(title);
+        Console.WriteLine("-----------------------------------------------------------------------------");
+        Console.WriteLine($"Hash index for '{title}': {hash}"); // Print the hash index  
+
+        if (hashTable.ContainsKey(hash))
+        {
+            LinkedList<Movie> movies = hashTable[hash];
+            int index = 0;
+            bool found = false;
+
+            foreach (var movie in movies)
+            {
+                if (movie.Title == title)
+                {
+                    Console.WriteLine($"Movie '{title}' found at node index {index} in the linked list at hash index {hash}.");
+                    Console.WriteLine("-----------------------------------------------------------------------------");
+                    found = true;
+                }
+                index++;
+            }
+
+            if (!found)
+            {
+                Console.WriteLine($"Movie '{title}' not found in the linked list at hash index {hash}.");
+            }
+        }
+        else
+        {
+            Console.WriteLine($"No movies found in the library at hash index {hash}.");
+        }
+    }
+
 }

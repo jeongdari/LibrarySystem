@@ -59,7 +59,7 @@ public static class InputHelper
     public static Genre GetGenreInput()
     {
         Genre genre;
-        Console.WriteLine("Enter genre (drama, adventure, family, action, sci-fi, comedy, animated, thriller, other): ");
+        Console.WriteLine("Enter genre (Drama, Adventure, Family, Action, SciFi, Comedy, Animated, Thriller, Other): ");
         while (true)
         {
             string? userInput = Console.ReadLine()?.Trim();

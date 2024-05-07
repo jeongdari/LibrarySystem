@@ -138,6 +138,7 @@ public class LibrarySystem
             // Prompt for genre, classification, duration, and number of copies to add a new movie
             AddNewMovie(title);
         }
+        movieCollection.DisplayKeyLocation(title);        
     }
     private void AddNewMovie(string title)
     {
