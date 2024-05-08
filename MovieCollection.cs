@@ -118,8 +118,8 @@ public class MovieCollection
             Movie? movie = hashTable[hash].FirstOrDefault(m => m.Title == title);
             if (movie != null)
             {
-                var table = new ConsoleTable("Title", "Genre", "Classification", "Duration (minutes)", "Copies Available");
-                table.AddRow(movie.Title, movie.MovieGenre, movie.MovieClassification, movie.DurationMinutes, movie.CopiesAvailable);
+                var table = new ConsoleTable("Title", "Genre", "Classification", "Duration\n(minutes)", "Copies\nAvailable", "Times\nRented");
+                table.AddRow(movie.Title, movie.MovieGenre, movie.MovieClassification, movie.DurationMinutes, movie.CopiesAvailable, movie.TimesBorrowed);
                 table.Write(Format.Default);
             }
             else
@@ -246,6 +246,13 @@ public class MovieCollection
             }
         }
         return null;
+    }
+
+    public bool ContainsMovie(string movieTitle)
+    {
+        // Check if the movie exists in the hash table of movies
+        int hash = CalculateHash(movieTitle);
+        return hashTable.ContainsKey(hash) && hashTable[hash].Any(m => m.Title == movieTitle);
     }
 
     public void DisplayKeyLocation(string title) // Use Star Wars and foaa for collision

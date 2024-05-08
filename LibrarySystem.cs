@@ -198,8 +198,8 @@ public class LibrarySystem
     {
         Console.WriteLine("\n<Register New Member>");
 
-        string firstName = InputHelper.GetNonEmptyInput("Enter first name: ");
-        string lastName = InputHelper.GetNonEmptyInput("Enter last name: ");
+        string firstName = InputHelper.GetLetterInput("Enter first name: ");
+        string lastName = InputHelper.GetLetterInput("Enter last name: ");
 
         if (memberCollection.FindMember(firstName, lastName) != null)
         {
@@ -216,8 +216,8 @@ public class LibrarySystem
     {
         Console.WriteLine("\n<Remove Registered Member>");
 
-        string removeFirstName = InputHelper.GetNonEmptyInput("Enter member's first name: ");
-        string removeLastName = InputHelper.GetNonEmptyInput("Enter member's last name: ");
+        string removeFirstName = InputHelper.GetLetterInput("Enter member's first name: ");
+        string removeLastName = InputHelper.GetLetterInput("Enter member's last name: ");
 
         memberCollection.RemoveMember(removeFirstName, removeLastName);
     }
@@ -225,8 +225,8 @@ public class LibrarySystem
     {
         Console.WriteLine("\n<Find Member's Contact Number>");
 
-        string findFirstName = InputHelper.GetNonEmptyInput("Enter member's first name: ");
-        string findLastName = InputHelper.GetNonEmptyInput("Enter member's last name: ");
+        string findFirstName = InputHelper.GetLetterInput("Enter member's first name: ");
+        string findLastName = InputHelper.GetLetterInput("Enter member's last name: ");
 
         string? contactNumber = memberCollection.FindMemberContactNumber(findFirstName, findLastName);
 
@@ -245,16 +245,23 @@ public class LibrarySystem
 
         string movieTitle = InputHelper.GetNonEmptyInput("Enter movie title to display renting members: ");
 
+        // Check if the movie exists in the library
+        if (!movieCollection.ContainsMovie(movieTitle))
+        {
+            Console.WriteLine($"The movie '{movieTitle}' is not found in the library.");
+            return;
+        }
+        // Proceed if movie is found in the library
         bool movieFound = memberCollection.DisplayMembersRentingMovie(movieTitle);
         if (!movieFound)
         {
-            Console.WriteLine($"The movie '{movieTitle}' is not found in the library.");
+            Console.WriteLine($"No one has borrowed the movie '{movieTitle}' yet.");
         }
     }
     private void MemberLogin()
     {
-        string firstName = InputHelper.GetNonEmptyInput("Enter first name: ");
-        string lastName = InputHelper.GetNonEmptyInput("Enter last name: ");
+        string firstName = InputHelper.GetLetterInput("Enter first name: ");
+        string lastName = InputHelper.GetLetterInput("Enter last name: ");
         string password = InputHelper.GetNonEmptyInput("Enter password: ");
 
         Member? member = memberCollection.FindMember(firstName, lastName);
@@ -312,7 +319,7 @@ public class LibrarySystem
         Console.WriteLine("\n********************************************************");
         Console.WriteLine("     COMMUNITY LIBRARY MOVIE DVD MANAGEMENT SYSTEM");
         Console.WriteLine("********************************************************");
-        Console.WriteLine($"\n[Member Menu for {memberFullName}]");
+        Console.WriteLine($"\n[Member Menu]           Logged-in: {memberFullName}");
         Console.WriteLine("");
         Console.WriteLine("1. Browse All Movies");
         Console.WriteLine("2. Display Movie Information");

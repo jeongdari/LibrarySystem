@@ -57,7 +57,6 @@ public class MemberCollection
 
     public bool DisplayMembersRentingMovie(string movieTitle)
     {
-        bool movieFound = false;
         bool anyRenters = false;
 
         foreach (var member in members)
@@ -66,17 +65,10 @@ public class MemberCollection
             {
                 Console.WriteLine($"Members renting '{movieTitle}': {member.FirstName} {member.LastName}");
                 anyRenters = true;
-                movieFound = true;
             }
         }
 
-        if (!anyRenters)
-        {
-            Console.WriteLine($"No one has borrowed the movie '{movieTitle}'.");
-            movieFound = true;
-        }        
-
-        return movieFound;
+        return anyRenters;
     }
 
 }

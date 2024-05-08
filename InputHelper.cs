@@ -1,3 +1,6 @@
+using System;
+using System.Text.RegularExpressions;
+
 public static class InputHelper
 {
     public static string GetNonEmptyInput(string prompt)
@@ -16,6 +19,34 @@ public static class InputHelper
         } while (string.IsNullOrEmpty(input));  // Loop while input is null or empty
 
         return input.Trim();  // Safe to call Trim() after ensuring input is not null
+    }
+    public static string GetLetterInput(string prompt)
+    {
+        string? input;
+        Regex alphabeticRegex = new Regex("^[a-zA-Z]+$");  // Regex pattern to match alphabetic letters
+
+        do
+        {
+            Console.Write(prompt);
+            input = Console.ReadLine()?.Trim();  // Read input and trim whitespace
+
+            // Check if input is null or empty
+            if (string.IsNullOrEmpty(input))
+            {
+                Console.WriteLine("Input cannot be empty. Please try again.");
+                continue;
+            }
+
+            // Check if input contains only alphabetic characters
+            if (!alphabeticRegex.IsMatch(input))
+            {
+                Console.WriteLine("Invalid input. Only alphabetic letters (A-Z, a-z) are allowed. Please try again.");
+                continue;
+            }
+
+        } while (string.IsNullOrEmpty(input) || !alphabeticRegex.IsMatch(input));  // Loop while input is null, empty, or contains non-alphabetic characters
+
+        return input;
     }
     public static int GetPositiveIntInput(string prompt)
     {
