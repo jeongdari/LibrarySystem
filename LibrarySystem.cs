@@ -163,11 +163,10 @@ public class LibrarySystem
             Console.WriteLine($"Movie '{removeTitle}' not found in the library.");
             return;
         }
-
-        int availableCopies = movieToRemove.CopiesAvailable;
+                
         while (true) // Loop until a valid number of copies to remove is entered
         {
-            // Prompt user to input number of copies to remove
+            int availableCopies = movieToRemove.CopiesAvailable;
             int removeNumCopies = InputHelper.GetPositiveIntInput($"Enter number of copies to remove (Available Copies: {availableCopies}): ");
 
             // Validate the number of copies to remove
