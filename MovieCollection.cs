@@ -26,7 +26,7 @@ public class MovieCollection
 
     private LinkedList<Movie> GetHashTable(int index)
     {
-        if (hashTable[index] == null )
+        if (hashTable[index] == null)
         {
             hashTable[index] = new LinkedList<Movie>();
         }
@@ -35,16 +35,17 @@ public class MovieCollection
 
     public void AddMovie(string title, Genre genre, Classification classification, int durationMinutes, int numCopies)
     {
-        if (hashTable.Length >= MaxMoviePairs)
+        int hash = CalculateHash(title);
+        LinkedList<Movie> movieList = GetHashTable(hash);
+        // Check the current number of movies at the hash index
+        int currentMovieCount = movieList.Count;
+
+        if (currentMovieCount >= MaxMoviePairs)
         {
             Console.WriteLine("Error: Maximum movie capacity reached. Unable to add new movie.");
             return;
         }
-
-        int hash = CalculateHash(title);
-        LinkedList<Movie> movieList = GetHashTable(hash);
-
-        Movie? existingMovie = movieList.FirstOrDefault(m => m.Title == title);                
+        Movie? existingMovie = movieList.FirstOrDefault(m => m.Title == title);
         if (existingMovie != null)
         {
             // This method is responsible for adding copies to an existing movie
@@ -55,10 +56,11 @@ public class MovieCollection
         {
             // Create a new movie object and add it to the linked list
             Movie newMovie = new Movie(title, genre, classification, durationMinutes, numCopies);
-            hashTable[hash].AddLast(newMovie);
+            movieList.AddLast(newMovie); // Add the new movie to the linked list at the hash index
             Console.WriteLine($"\n'{title}' added to the library with {numCopies} copies.");
         }
     }
+
 
     public void AddMovieCopies(string title, int numCopies)
     {
@@ -67,15 +69,15 @@ public class MovieCollection
 
         Movie? existingMovie = movieList.FirstOrDefault(m => m.Title == title);
 
-        if (existingMovie != null) 
+        if (existingMovie != null)
         {
             existingMovie.AddCopies(numCopies);
-            Console.WriteLine($"Added {numCopies} copies of '{title}' to the library."); 
+            Console.WriteLine($"Added {numCopies} copies of '{title}' to the library.");
         }
         else
         {
             Console.WriteLine($"Error: Movie '{title}' not found in the library.");
-        }        
+        }
     }
 
     public bool RemoveMovie(string title, int numCopiesToRemove)
@@ -85,24 +87,23 @@ public class MovieCollection
 
         // Find the existing movie in the linked list
         Movie? existingMovie = movieList.FirstOrDefault(m => m.Title == title);
-        if (existingMovie != null)
-        {
-            bool removed = existingMovie.RemoveCopies(numCopiesToRemove);
-            if (existingMovie.CopiesAvailable == 0)
-            {
-                movieList.Remove(existingMovie);
-            }
-            return removed;
-        }
-        else
+        if (existingMovie == null)
         {
             Console.WriteLine($"Error: Movie '{title}' not found in the library.");
             return false;
         }
-    }        
+
+        bool removed = existingMovie.RemoveCopies(numCopiesToRemove);
+        if (removed && existingMovie.CopiesAvailable == 0)
+        {
+            movieList.Remove(existingMovie);
+        }
+        return removed;
+
+    }
 
     public void DisplayAllMovies()
-    {        
+    {
         Console.WriteLine("Movies currently available:");
         var table = new ConsoleTable("Title", "Genre", "Classification", "Copies Available");
 
@@ -111,7 +112,7 @@ public class MovieCollection
             foreach (var movie in movieList)
             {
                 table.AddRow(movie.Title, movie.MovieGenre, movie.MovieClassification, movie.CopiesAvailable);
-            }            
+            }
         }
         table.Write(Format.Default);
     }
@@ -120,58 +121,50 @@ public class MovieCollection
     {
         int hash = CalculateHash(title);
 
-        if (hashTable.ContainsKey(hash))
+        LinkedList<Movie> movieList = GetHashTable(hash);
+
+        // Find the movie with the specified title in the linked list
+        Movie? movie = movieList.FirstOrDefault(m => m.Title == title);
+        if (movie != null)
         {
-            Movie? movie = hashTable[hash].FirstOrDefault(m => m.Title == title);
-            if (movie != null)
-            {
-                var table = new ConsoleTable("Title", "Genre", "Classification", "Duration\n(minutes)", "Copies\nAvailable", "Times\nRented");
-                table.AddRow(movie.Title, movie.MovieGenre, movie.MovieClassification, movie.DurationMinutes, movie.CopiesAvailable, movie.TimesBorrowed);
-                table.Write(Format.Default);
-            }
-            else
-            {
-                Console.WriteLine($"Movie '{title}' not found in the library.");
-            }
+            // Display movie information in a formatted table
+            var table = new ConsoleTable("Title", "Genre", "Classification", "Duration\n(minutes)", "Copies\nAvailable", "Times\nBorrowed");
+            table.AddRow(movie.Title, movie.MovieGenre, movie.MovieClassification, movie.DurationMinutes, movie.CopiesAvailable, movie.TimesBorrowed);
+            table.Write(Format.Default);
         }
         else
         {
+            // Movie with the specified title not found in the library
             Console.WriteLine($"Movie '{title}' not found in the library.");
         }
     }
 
-    public Movie? BorrowMovie(Member member, string title)
+
+    public Movie? BorrowMovie(Member member, string? title)
     {
         while (true) // Loop until a valid movie is borrowed or user cancels
         {
+            if (title == null)
+            {
+                Console.WriteLine("Invalid movie title provided.");
+                return null;
+            }
             int hash = CalculateHash(title);
 
-            // Check if the movie exists in the library
-            if (!hashTable.ContainsKey(hash) || hashTable[hash].All(m => m.Title != title))
-            {
-                Console.WriteLine($"\nError: Movie '{title}' does not exist in the library.");
-                Console.WriteLine("Please enter a valid movie title or type 'Q' to exit:");
-                title = Console.ReadLine(); // Prompt user to enter a valid movie title or cancel
-                if (title.ToUpper() == "Q")
-                {
-                    Console.WriteLine("Borrowing operation canceled.");
-                    return null; 
-                }
-                continue;
-            }
+            LinkedList<Movie> movieList = GetHashTable(hash);
 
-            // Find the movie to borrow
-            Movie? movieToBorrow = hashTable[hash].FirstOrDefault(m => m.Title == title && m.CopiesAvailable > 0);
+            // Check if the movie exists in the library
+            Movie? movieToBorrow = movieList.FirstOrDefault(m => m.Title == title && m.CopiesAvailable > 0);
 
             if (movieToBorrow == null)
             {
                 Console.WriteLine($"\nError: Movie '{title}' is not available for borrowing since all the copies are rented.");
                 Console.WriteLine("Please enter a valid movie title or type 'Q' to exit:");
                 title = Console.ReadLine(); // Prompt user to enter a different movie title or cancel
-                if (title.ToUpper() == "Q")
+                if (title?.ToUpper() == "Q")
                 {
                     Console.WriteLine("Borrowing operation canceled.");
-                    return null; 
+                    return null;
                 }
                 continue;
             }
@@ -182,10 +175,10 @@ public class MovieCollection
                 Console.WriteLine("\nError: You have already borrowed this movie.");
                 Console.WriteLine("Please enter a valid movie title or type 'Q' to exit:");
                 title = Console.ReadLine(); // Prompt user to enter a different movie title or cancel
-                if (title.ToUpper() == "Q")
+                if (title?.ToUpper() == "Q")
                 {
                     Console.WriteLine("Borrowing operation canceled.");
-                    return null; 
+                    return null;
                 }
                 continue;
             }
@@ -207,44 +200,70 @@ public class MovieCollection
         }
     }
 
-
-
     public void ReturnMovie(Movie movie)
     {
         int hash = CalculateHash(movie.Title);
 
-        if (!hashTable.ContainsKey(hash) || hashTable[hash].All(m => m.Title != movie.Title))
+        LinkedList<Movie> movieList = GetHashTable(hash);
+
+        if (movieList == null || movieList.All(m => m.Title != movie.Title))
         {
             Console.WriteLine($"\nError: Movie '{movie.Title}' not found in the library.");
             return;
         }
 
-        Movie? movieToReturn = hashTable[hash].FirstOrDefault(m => m.Title == movie.Title);
+        Movie? movieToReturn = movieList.FirstOrDefault(m => m.Title == movie.Title);
         if (movieToReturn != null)
         {
             movieToReturn.ReturnCopy();
         }
     }
-
     public LinkedList<Movie> GetBorrowingMovies(Member member)
     {
-        var borrowingMovies = hashTable.SelectMany(pair => pair.Value.Where(m => m.CopiesAvailable < m.TotalCopies && member.HasBorrowedMovie(m)));
+        List<Movie> borrowingMovies = new List<Movie>();
+
+        foreach (LinkedList<Movie> movieList in hashTable)
+        {
+            if (movieList != null)
+            {
+                foreach (Movie movie in movieList)
+                {
+                    if (movie.CopiesAvailable < movie.TotalCopies && member.HasBorrowedMovie(movie))
+                    {
+                        borrowingMovies.Add(movie);
+                    }
+                }
+            }
+        }
+
         return new LinkedList<Movie>(borrowingMovies);
     }
-
     public LinkedList<Movie> GetMostFrequentlyBorrowedMovies(int topCount)
     {
-        var allMovies = hashTable.SelectMany(pair => pair.Value);
+        List<Movie> allMovies = new List<Movie>();
+
+        foreach (LinkedList<Movie> movieList in hashTable)
+        {
+            if (movieList != null)
+            {
+                allMovies.AddRange(movieList);
+            }
+        }
+
         var sortedMovies = allMovies.Where(m => m.TimesBorrowed > 0)
-                                .OrderByDescending(m => m.TimesBorrowed)
-                                .Take(topCount);
+                                    .OrderByDescending(m => m.TimesBorrowed)
+                                    .Take(topCount);
+
         return new LinkedList<Movie>(sortedMovies);
     }
+
     public Movie? FindMovieByTitle(string title)
     {
-        foreach (var movies in hashTable.Values)
+        int hash = CalculateHash(title);
+
+        if (hashTable[hash] != null)
         {
-            foreach (var movie in movies)
+            foreach (Movie movie in hashTable[hash])
             {
                 if (movie.Title == title)
                 {
@@ -252,16 +271,15 @@ public class MovieCollection
                 }
             }
         }
+
         return null;
     }
-
     public bool ContainsMovie(string movieTitle)
     {
-        // Check if the movie exists in the hash table of movies
         int hash = CalculateHash(movieTitle);
-        return hashTable.ContainsKey(hash) && hashTable[hash].Any(m => m.Title == movieTitle);
-    }
 
+        return hashTable[hash] != null && hashTable[hash].Any(m => m.Title == movieTitle);
+    }
     public void DisplayKeyLocation(string title) // Use Star Wars and foaa for collision
     {
         int hash = CalculateHash(title);
@@ -278,7 +296,7 @@ public class MovieCollection
             {
                 if (movie.Title == title)
                 {
-                    Console.WriteLine($"Movie '{title}' found at node index {index} in the linked list at hash index {hash}.");
+                    Console.WriteLine($"Movie '{title}' stored at node index {index} in the linked list at hash index {hash}.");
                     Console.WriteLine("-----------------------------------------------------------------------------");
                     found = true;
                 }
