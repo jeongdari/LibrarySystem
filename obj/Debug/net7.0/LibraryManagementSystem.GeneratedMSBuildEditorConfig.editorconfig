@@ -8,6 +8,4 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = LibraryManagementSystem
-build_property.ProjectDir = C:\Users\jeong\Desktop\LibrarySystem\
-build_property.EnableComHosting = 
-build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.ProjectDir = C:\Users\n11491205\Source\Repos\LibrarySystem\

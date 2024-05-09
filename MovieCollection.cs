@@ -1,17 +1,16 @@
 ﻿using System;
 using ConsoleTables;
-using System.Collections.Generic;
 using System.Linq;
 
 public class MovieCollection
 {
     private const int MaxMoviePairs = 1000;
     private const int HashTableSize = 2000;
-    private Dictionary<int, LinkedList<Movie>> hashTable;
+    private LinkedList<Movie>[] hashTable;
 
     public MovieCollection()
     {
-        hashTable = new Dictionary<int, LinkedList<Movie>>();
+        hashTable = new LinkedList<Movie>[HashTableSize];
     }
 
     private static int CalculateHash(string key)
@@ -25,23 +24,27 @@ public class MovieCollection
         return hash;
     }
 
+    private LinkedList<Movie> GetHashTable(int index)
+    {
+        if (hashTable[index] == null )
+        {
+            hashTable[index] = new LinkedList<Movie>();
+        }
+        return hashTable[index];
+    }
+
     public void AddMovie(string title, Genre genre, Classification classification, int durationMinutes, int numCopies)
     {
-        if (hashTable.Count >= MaxMoviePairs)
+        if (hashTable.Length >= MaxMoviePairs)
         {
             Console.WriteLine("Error: Maximum movie capacity reached. Unable to add new movie.");
             return;
         }
 
         int hash = CalculateHash(title);
+        LinkedList<Movie> movieList = GetHashTable(hash);
 
-        if (!hashTable.ContainsKey(hash))
-        {
-            hashTable[hash] = new LinkedList<Movie>();
-        }
-
-        // Check if the movie already exists in the linked list
-        Movie? existingMovie = hashTable[hash].FirstOrDefault(m => m.Title == title);
+        Movie? existingMovie = movieList.FirstOrDefault(m => m.Title == title);                
         if (existingMovie != null)
         {
             // This method is responsible for adding copies to an existing movie
@@ -60,52 +63,56 @@ public class MovieCollection
     public void AddMovieCopies(string title, int numCopies)
     {
         int hash = CalculateHash(title);
+        LinkedList<Movie> movieList = GetHashTable(hash);
 
-        if (!hashTable.ContainsKey(hash) || hashTable[hash].All(m => m.Title != title))
+        Movie? existingMovie = movieList.FirstOrDefault(m => m.Title == title);
+
+        if (existingMovie != null) 
+        {
+            existingMovie.AddCopies(numCopies);
+            Console.WriteLine($"Added {numCopies} copies of '{title}' to the library."); 
+        }
+        else
         {
             Console.WriteLine($"Error: Movie '{title}' not found in the library.");
-            return;
-        }
-
-        // Add copies to the existing movie
-        Movie existingMovie = hashTable[hash].First(m => m.Title == title);
-        existingMovie.AddCopies(numCopies);
-        Console.WriteLine($"Added {numCopies} copies of '{title}' to the library.");
+        }        
     }
 
     public bool RemoveMovie(string title, int numCopiesToRemove)
     {
         int hash = CalculateHash(title);
+        LinkedList<Movie> movieList = GetHashTable(hash);
 
-        if (!hashTable.ContainsKey(hash) || hashTable[hash].All(m => m.Title != title))
+        // Find the existing movie in the linked list
+        Movie? existingMovie = movieList.FirstOrDefault(m => m.Title == title);
+        if (existingMovie != null)
+        {
+            bool removed = existingMovie.RemoveCopies(numCopiesToRemove);
+            if (existingMovie.CopiesAvailable == 0)
+            {
+                movieList.Remove(existingMovie);
+            }
+            return removed;
+        }
+        else
         {
             Console.WriteLine($"Error: Movie '{title}' not found in the library.");
             return false;
         }
-
-        // Remove copies from the existing movie
-        Movie movieToRemove = hashTable[hash].First(m => m.Title == title);
-        bool removed = movieToRemove.RemoveCopies(numCopiesToRemove);
-        if (removed && movieToRemove.CopiesAvailable == 0)
-        {
-            hashTable[hash].Remove(movieToRemove);
-        }
-
-        return removed;
-    }
+    }        
 
     public void DisplayAllMovies()
-    {
-        var allMovies = hashTable.SelectMany(pair => pair.Value);
-        var sortedMovies = allMovies.OrderBy(m => m.Title);
+    {        
         Console.WriteLine("Movies currently available:");
         var table = new ConsoleTable("Title", "Genre", "Classification", "Copies Available");
 
-        foreach (var movie in sortedMovies)
+        foreach (var movieList in hashTable.Where(list => list != null))
         {
-            table.AddRow(movie.Title, movie.MovieGenre, movie.MovieClassification, movie.CopiesAvailable);
+            foreach (var movie in movieList)
+            {
+                table.AddRow(movie.Title, movie.MovieGenre, movie.MovieClassification, movie.CopiesAvailable);
+            }            
         }
-
         table.Write(Format.Default);
     }
 
@@ -261,13 +268,13 @@ public class MovieCollection
         Console.WriteLine("-----------------------------------------------------------------------------");
         Console.WriteLine($"Hash index for '{title}': {hash}"); // Print the hash index  
 
-        if (hashTable.ContainsKey(hash))
+        LinkedList<Movie> movieList = hashTable[hash];
+        if (movieList != null)
         {
-            LinkedList<Movie> movies = hashTable[hash];
             int index = 0;
             bool found = false;
 
-            foreach (var movie in movies)
+            foreach (var movie in movieList)
             {
                 if (movie.Title == title)
                 {
@@ -277,7 +284,6 @@ public class MovieCollection
                 }
                 index++;
             }
-
             if (!found)
             {
                 Console.WriteLine($"Movie '{title}' not found in the linked list at hash index {hash}.");
