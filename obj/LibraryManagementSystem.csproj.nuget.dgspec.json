@@ -1,27 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Users\\jeong\\Desktop\\LibrarySystem\\LibraryManagementSystem.csproj": {}
+    "/Users/danny/Desktop/LibrarySystem/LibraryManagementSystem.csproj": {}
   },
   "projects": {
-    "c:\\Users\\jeong\\Desktop\\LibrarySystem\\LibraryManagementSystem.csproj": {
+    "/Users/danny/Desktop/LibrarySystem/LibraryManagementSystem.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\jeong\\Desktop\\LibrarySystem\\LibraryManagementSystem.csproj",
+        "projectUniqueName": "/Users/danny/Desktop/LibrarySystem/LibraryManagementSystem.csproj",
         "projectName": "LibraryManagementSystem",
-        "projectPath": "c:\\Users\\jeong\\Desktop\\LibrarySystem\\LibraryManagementSystem.csproj",
-        "packagesPath": "C:\\Users\\jeong\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\jeong\\Desktop\\LibrarySystem\\obj\\",
+        "projectPath": "/Users/danny/Desktop/LibrarySystem/LibraryManagementSystem.csproj",
+        "packagesPath": "/Users/danny/.nuget/packages/",
+        "outputPath": "/Users/danny/Desktop/LibrarySystem/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\jeong\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/Users/danny/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -61,12 +59,26 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[7.0.18, 7.0.18]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Host.osx-arm64",
+              "version": "[7.0.18, 7.0.18]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[7.0.18, 7.0.18]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.204\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.204/RuntimeIdentifierGraph.json"
         }
       }
     }
