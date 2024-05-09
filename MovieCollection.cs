@@ -7,6 +7,7 @@ public class MovieCollection
     private const int MaxMoviePairs = 1000;
     private const int HashTableSize = 2000;
     private LinkedList<Movie>[] hashTable;
+    private List<Member> members = new List<Member>();
 
     public MovieCollection()
     {
@@ -92,12 +93,47 @@ public class MovieCollection
             Console.WriteLine($"Error: Movie '{title}' not found in the library.");
             return false;
         }
+
+        // Check if there are enough available copies to remove
+        if (existingMovie.CopiesAvailable < numCopiesToRemove)
+        {
+            Console.WriteLine($"Error: You can only remove up to {existingMovie.CopiesAvailable} copies for '{title}'.");
+            return false;
+        }
+
+        // Attempt to remove the specified number of copies
         bool removed = existingMovie.RemoveCopies(numCopiesToRemove);
+
         if (removed && existingMovie.CopiesAvailable == 0)
         {
-            movieList.Remove(existingMovie);
+            // Check if there are still borrowed copies
+            if (existingMovie.TotalCopies > 0)
+            {
+                Console.WriteLine($"There are still borrowed copies of '{title}' in the system. Movie information will be retained.");
+            }
+            else
+            {
+                // Remove the movie information only if all copies (including borrowed) are removed
+                movieList.Remove(existingMovie);
+            }
         }
+
         return removed;
+    }
+
+
+    private bool CheckActiveBorrowingRecords(Movie movie)
+    {
+        // Retrieve all members who have borrowed this movie
+        foreach (Member member in members)
+        {
+            if (member.HasBorrowedMovie(movie))
+            {
+                return true; // There is an active borrowing record
+            }
+        }
+
+        return false; // No active borrowing records found
     }
 
     public void DisplayAllMovies()
@@ -150,13 +186,14 @@ public class MovieCollection
             int hash = CalculateHash(title);
             LinkedList<Movie> movieList = GetHashTable(hash);
 
-            // Check if the movie exists in the library
-            bool movieExists = movieList.Any(m => m.Title == title && m.CopiesAvailable > 0);
+            // Find the movie to borrow
+            Movie? movieToBorrow = movieList.FirstOrDefault(m => m.Title == title);
 
-            if (!movieExists)
+            // Check if the member has already borrowed this movie
+            if (movieToBorrow != null && member.HasBorrowedMovie(movieToBorrow))
             {
-                Console.WriteLine($"\nError: Movie '{title}' is not found in the library.");
-                Console.WriteLine("Please enter a valid movie title or type 'Q' to exit:");
+                Console.WriteLine("\nError: You have already borrowed this movie.");
+                Console.WriteLine("Please enter a different movie title or type 'Q' to exit:");
                 title = Console.ReadLine(); // Prompt user to enter a different movie title or cancel
                 if (title?.ToUpper() == "Q")
                 {
@@ -166,13 +203,10 @@ public class MovieCollection
                 continue;
             }
 
-            // Find the movie to borrow
-            Movie? movieToBorrow = movieList.FirstOrDefault(m => m.Title == title && m.CopiesAvailable > 0);
-
-            // Check if the member has already borrowed this movie
-            if (movieToBorrow != null && member.HasBorrowedMovie(movieToBorrow))
+            // Check if the movie exists in the library and has available copies
+            if (movieToBorrow == null || movieToBorrow.CopiesAvailable == 0)
             {
-                Console.WriteLine("\nError: You have already borrowed this movie.");
+                Console.WriteLine("\nSorry, all copies of the movie you are requesting have been borrowed or it is not available. Please try another movie.");
                 Console.WriteLine("Please enter a valid movie title or type 'Q' to exit:");
                 title = Console.ReadLine(); // Prompt user to enter a different movie title or cancel
                 if (title?.ToUpper() == "Q")
@@ -191,16 +225,15 @@ public class MovieCollection
             }
 
             // Attempt to borrow the movie
-            if (movieToBorrow != null)
-            {
-                movieToBorrow.BorrowCopy();
-                member.BorrowMovie(movieToBorrow); // Add the movie to the member's borrowed list
-                movieToBorrow.Borrower = member; // Set the borrower to the member who borrowed the movie
-                Console.WriteLine($"Successfully borrowed '{movieToBorrow.Title}'. Enjoy watching!");
-                return movieToBorrow; // Return the borrowed movie
-            }
+            movieToBorrow.BorrowCopy();
+            member.BorrowMovie(movieToBorrow); // Add the movie to the member's borrowed list
+            movieToBorrow.Borrower = member; // Set the borrower to the member who borrowed the movie
+            Console.WriteLine($"Successfully borrowed '{movieToBorrow.Title}'. Enjoy watching!");
+            return movieToBorrow; // Return the borrowed movie
         }
     }
+
+
 
 
     public void ReturnMovie(Movie movie)

@@ -154,44 +154,52 @@ public class LibrarySystem
     {
         Console.WriteLine("\n<Remove Movie DVDs>");
 
-        string removeTitle = InputHelper.GetNonEmptyInput("Enter movie title: ");
+        while (true) // Loop until the user chooses to exit
+        {
+            string removeTitle = InputHelper.GetNonEmptyInput("Enter movie title to remove: ");
+            // Check if the movie exists in the library
+            Movie? movieToRemove = movieCollection.FindMovieByTitle(removeTitle);
+            if (movieToRemove == null)
+            {
+                Console.WriteLine($"Movie '{removeTitle}' not found in the library.");
+                continue; // Prompt user to enter a different movie title
+            }
 
-        // Check if the movie exists in the library
-        Movie? movieToRemove = movieCollection.FindMovieByTitle(removeTitle);
-        if (movieToRemove == null)
-        {
-            Console.WriteLine($"Movie '{removeTitle}' not found in the library.");
-            return;
-        }
-                
-        while (true) // Loop until a valid number of copies to remove is entered
-        {
+            // Get the available copies of the movie
             int availableCopies = movieToRemove.CopiesAvailable;
-            int removeNumCopies = InputHelper.GetPositiveIntInput($"Enter number of copies to remove (Available Copies: {availableCopies}): ");
+            int totalCopies = movieToRemove.TotalCopies;
+
+            // Check if there are no available copies to remove
+            if (availableCopies == 0)
+            {
+                Console.WriteLine($"There are no available copies of '{removeTitle}' to remove.");
+                return; // Terminate the method if no copies are available
+            }
+
+            int removeNumCopies = InputHelper.GetPositiveIntInput($"Enter number of copies to remove (Removable Copies: {availableCopies}): ");
 
             // Validate the number of copies to remove
             if (removeNumCopies > availableCopies)
             {
                 Console.WriteLine($"Error: You can only remove up to {availableCopies} copies for '{removeTitle}'.");
+                continue; // Prompt user to enter a valid number of copies
+            }
+            // Attempt to remove the specified number of copies
+            bool success = movieCollection.RemoveMovie(removeTitle, removeNumCopies);
+
+            if (success)
+            {
+                Console.WriteLine($"Successfully removed {removeNumCopies} copies of '{removeTitle}'.");                
             }
             else
             {
-                // Attempt to remove the specified number of copies
-                bool success = movieCollection.RemoveMovie(removeTitle, removeNumCopies);
-
-                if (success)
-                {
-                    Console.WriteLine($"Successfully removed {removeNumCopies} copies of '{removeTitle}'.");
-                }
-                else
-                {
-                    Console.WriteLine($"Failed to remove {removeNumCopies} copies of '{removeTitle}'. Movie not found.");
-                }
-
-                break; // Exit the loop since a valid operation was performed
+                Console.WriteLine($"Failed to remove {removeNumCopies} copies of '{removeTitle}'. Movie not found.");
             }
+            break; // Exit the loop since a valid operation was performed
         }
     }
+
+
 
     private void RegisterNewMember()
     {
@@ -399,7 +407,7 @@ public class LibrarySystem
             var table = new ConsoleTable("Rank", "Title", "Genre", "Classification", "Times Borrowed");
             foreach (var movie in topBorrowedMovies)
             {
-               table.AddRow(rank, movie.Title, movie.MovieGenre, movie.MovieClassification, movie.TimesBorrowed);
+                table.AddRow(rank, movie.Title, movie.MovieGenre, movie.MovieClassification, movie.TimesBorrowed);
                 rank++;
             }
             table.Write(Format.Default);
