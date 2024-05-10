@@ -40,24 +40,51 @@
     ]
   },
   "packageFolders": {
+<<<<<<< HEAD
     "/Users/danny/.nuget/packages/": {}
+=======
+    "C:\\Users\\n11491205\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+>>>>>>> origin/NewHashTable
   },
   "project": {
     "version": "1.0.0",
     "restore": {
+<<<<<<< HEAD
       "projectUniqueName": "/Users/danny/Desktop/LibrarySystem/LibraryManagementSystem.csproj",
       "projectName": "LibraryManagementSystem",
       "projectPath": "/Users/danny/Desktop/LibrarySystem/LibraryManagementSystem.csproj",
       "packagesPath": "/Users/danny/.nuget/packages/",
       "outputPath": "/Users/danny/Desktop/LibrarySystem/obj/",
+=======
+      "projectUniqueName": "C:\\Users\\n11491205\\Source\\Repos\\LibrarySystem\\LibraryManagementSystem.csproj",
+      "projectName": "LibraryManagementSystem",
+      "projectPath": "C:\\Users\\n11491205\\Source\\Repos\\LibrarySystem\\LibraryManagementSystem.csproj",
+      "packagesPath": "C:\\Users\\n11491205\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\n11491205\\Source\\Repos\\LibrarySystem\\obj\\",
+>>>>>>> origin/NewHashTable
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
+<<<<<<< HEAD
         "/Users/danny/.nuget/NuGet/NuGet.Config"
+=======
+        "C:\\Users\\n11491205\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config"
+>>>>>>> origin/NewHashTable
       ],
       "originalTargetFrameworks": [
         "net7.0"
       ],
       "sources": {
+<<<<<<< HEAD
+=======
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
+>>>>>>> origin/NewHashTable
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -70,11 +97,6 @@
         "warnAsError": [
           "NU1605"
         ]
-      },
-      "restoreAuditProperties": {
-        "enableAudit": "true",
-        "auditLevel": "low",
-        "auditMode": "direct"
       }
     },
     "frameworks": {
@@ -116,7 +138,11 @@
             "privateAssets": "all"
           }
         },
+<<<<<<< HEAD
         "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.204/RuntimeIdentifierGraph.json"
+=======
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.103\\RuntimeIdentifierGraph.json"
+>>>>>>> origin/NewHashTable
       }
     }
   }

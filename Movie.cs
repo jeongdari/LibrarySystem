@@ -50,10 +50,7 @@ public class Movie
             CopiesAvailable -= numCopiesToRemove;
             return true; // Successfully removed copies
         }
-        else
-        {
-            return false; // Not enough copies available to remove
-        }
+        return false; // Not enough copies available to remove
     }
 
     public void BorrowCopy()

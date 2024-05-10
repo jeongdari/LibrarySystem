@@ -8,6 +8,10 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = LibraryManagementSystem
+<<<<<<< HEAD
 build_property.ProjectDir = /Users/danny/Desktop/LibrarySystem/
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
+=======
+build_property.ProjectDir = C:\Users\n11491205\Source\Repos\LibrarySystem\
+>>>>>>> origin/NewHashTable
