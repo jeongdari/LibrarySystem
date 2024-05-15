@@ -15,6 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2c3b0c51b82b32f73fc7fcf132e0eec11932ea19")]
 =======
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
@@ -22,6 +23,9 @@ using System.Reflection;
 =======
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9b9e1cbfaf2645e2cf98484d0ef9675eeb79f71a")]
 >>>>>>> b8ad9d8 (To merge)
+=======
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+23edbddec86ec136442224dd772d55f3840c3cee")]
+>>>>>>> origin/NewHashTable
 [assembly: System.Reflection.AssemblyProductAttribute("LibraryManagementSystem")]
 [assembly: System.Reflection.AssemblyTitleAttribute("LibraryManagementSystem")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

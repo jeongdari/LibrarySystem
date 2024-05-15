@@ -1,21 +1,17 @@
 {
   "version": 2,
-<<<<<<< HEAD
-  "dgSpecHash": "AjKewNgrsLZwdEhgOcH1NQDIu421wyi+G0L9kPW2GypcPTMhrbVG+N22LlMZgGi5zTrQ3izrXuI/JlWdCMWQ4A==",
+  "dgSpecHash": "OjI7CbFSsRyorj6xL35CjhPNZCepzR4cFYhQ4DNWmdOEnFVJWtYyWxwJ93/7BeVgq3w2080O0xW77SqLTkh4Lg==",
   "success": true,
   "projectFilePath": "/Users/danny/Desktop/LibrarySystem/LibraryManagementSystem.csproj",
   "expectedPackageFiles": [
-    "/Users/danny/.nuget/packages/consoletables/2.6.1/consoletables.2.6.1.nupkg.sha512",
-    "/Users/danny/.nuget/packages/microsoft.netcore.app.ref/7.0.18/microsoft.netcore.app.ref.7.0.18.nupkg.sha512",
-    "/Users/danny/.nuget/packages/microsoft.aspnetcore.app.ref/7.0.18/microsoft.aspnetcore.app.ref.7.0.18.nupkg.sha512",
-    "/Users/danny/.nuget/packages/microsoft.netcore.app.host.osx-arm64/7.0.18/microsoft.netcore.app.host.osx-arm64.7.0.18.nupkg.sha512"
-=======
-  "dgSpecHash": "wTXCezTxx1TTnwOnm4FjvIz3K37jfJBlidSF7RW2+gI0mhuILwajc6ZmMFlTsriNMIrhjbMWdrglYuidqbvwCw==",
-  "success": true,
-  "projectFilePath": "C:\\Users\\n11491205\\Source\\Repos\\LibrarySystem\\LibraryManagementSystem.csproj",
-  "expectedPackageFiles": [
-    "C:\\Users\\n11491205\\.nuget\\packages\\consoletables\\2.6.1\\consoletables.2.6.1.nupkg.sha512"
->>>>>>> origin/NewHashTable
+    "/Users/danny/.nuget/packages/consoletables/2.6.1/consoletables.2.6.1.nupkg.sha512"
   ],
-  "logs": []
+  "logs": [
+    {
+      "code": "Undefined",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Problem reading the cache file /Users/danny/Desktop/LibrarySystem/obj/project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
+    }
+  ]
 }
