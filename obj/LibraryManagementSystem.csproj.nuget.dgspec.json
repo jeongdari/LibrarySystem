@@ -1,32 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\n11491205\\Source\\Repos\\LibrarySystem\\LibraryManagementSystem.csproj": {}
+    "/Users/danny/Desktop/LibrarySystem/LibraryManagementSystem.csproj": {}
   },
   "projects": {
-    "C:\\Users\\n11491205\\Source\\Repos\\LibrarySystem\\LibraryManagementSystem.csproj": {
+    "/Users/danny/Desktop/LibrarySystem/LibraryManagementSystem.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\n11491205\\Source\\Repos\\LibrarySystem\\LibraryManagementSystem.csproj",
+        "projectUniqueName": "/Users/danny/Desktop/LibrarySystem/LibraryManagementSystem.csproj",
         "projectName": "LibraryManagementSystem",
-        "projectPath": "C:\\Users\\n11491205\\Source\\Repos\\LibrarySystem\\LibraryManagementSystem.csproj",
-        "packagesPath": "C:\\Users\\n11491205\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\n11491205\\Source\\Repos\\LibrarySystem\\obj\\",
+        "projectPath": "/Users/danny/Desktop/LibrarySystem/LibraryManagementSystem.csproj",
+        "packagesPath": "/Users/danny/.nuget/packages/",
+        "outputPath": "/Users/danny/Desktop/LibrarySystem/obj/",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\n11491205\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config"
+          "/Users/danny/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -39,6 +32,11 @@
           "warnAsError": [
             "NU1605"
           ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -61,12 +59,26 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[7.0.18, 7.0.18]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Host.osx-arm64",
+              "version": "[7.0.18, 7.0.18]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[7.0.18, 7.0.18]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.103\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.204/RuntimeIdentifierGraph.json"
         }
       }
     }
