@@ -82,46 +82,47 @@ public class MovieCollection
     }
 
     public bool RemoveMovie(string title, int numCopiesToRemove)
+{
+    int hash = CalculateHash(title);
+    LinkedList<Movie> movieList = GetHashTable(hash);
+
+    // Find the existing movie in the linked list
+    Movie? existingMovie = movieList.FirstOrDefault(m => m.Title == title);
+    if (existingMovie == null)
     {
-        int hash = CalculateHash(title);
-        LinkedList<Movie> movieList = GetHashTable(hash);
-
-        // Find the existing movie in the linked list
-        Movie? existingMovie = movieList.FirstOrDefault(m => m.Title == title);
-        if (existingMovie == null)
-        {
-            Console.WriteLine($"Error: Movie '{title}' not found in the library.");
-            return false;
-        }
-
-        // Check if there are enough available copies to remove
-        if (existingMovie.CopiesAvailable < numCopiesToRemove)
-        {
-            Console.WriteLine($"Error: You can only remove up to {existingMovie.CopiesAvailable} copies for '{title}'.");
-            return false;
-        }
-
-        // Attempt to remove the specified number of copies
-        bool removed = existingMovie.RemoveCopies(numCopiesToRemove);
-
-        if (removed && existingMovie.CopiesAvailable == 0)
-        {
-            // Check if there are still borrowed copies
-            if (existingMovie.TotalCopies > 0)
-            {
-                Console.WriteLine($"There are still borrowed copies of '{title}' in the system. Movie information will be retained.");
-            }
-            else
-            {
-                // Remove the movie information only if all copies (including borrowed) are removed
-                movieList.Remove(existingMovie);
-            }
-        }
-
-        return removed;
+        Console.WriteLine($"Error: Movie '{title}' not found in the library.");
+        return false;
     }
 
+    // Check if there are enough available copies to remove
+    if (existingMovie.CopiesAvailable < numCopiesToRemove)
+    {
+        Console.WriteLine($"Error: You can only remove up to {existingMovie.CopiesAvailable} copies for '{title}'.");
+        return false;
+    }
 
+    // Attempt to remove the specified number of copies
+    bool removed = existingMovie.RemoveCopies(numCopiesToRemove);
+
+    // Check if all copies (including borrowed) have been removed
+    if (existingMovie.CopiesAvailable == 0)
+    {
+        // Check for active borrowing records
+        bool hasActiveBorrowing = CheckActiveBorrowingRecords(existingMovie);
+        if (hasActiveBorrowing)
+        {
+            Console.WriteLine($"There are still borrowed copies of '{title}' in the system. Movie information will be retained.");
+        }
+        else
+        {
+            // No active borrowing records, remove the movie from the list
+            movieList.Remove(existingMovie);
+            Console.WriteLine($"'{title}' has been completely removed from the library.");
+        }
+    }
+
+    return removed;
+}
     private bool CheckActiveBorrowingRecords(Movie movie)
     {
         // Retrieve all members who have borrowed this movie

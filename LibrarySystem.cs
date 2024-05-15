@@ -163,7 +163,6 @@ public class LibrarySystem
 
             // Get the available copies of the movie
             int availableCopies = movieToRemove.CopiesAvailable;
-            int totalCopies = movieToRemove.TotalCopies;
 
             // Check if there are no available copies to remove
             if (availableCopies == 0)
@@ -180,12 +179,13 @@ public class LibrarySystem
                 Console.WriteLine($"Error: You can only remove up to {availableCopies} copies for '{removeTitle}'.");
                 continue; // Prompt user to enter a valid number of copies
             }
+
             // Attempt to remove the specified number of copies
             bool success = movieCollection.RemoveMovie(removeTitle, removeNumCopies);
 
             if (success)
             {
-                Console.WriteLine($"Successfully removed {removeNumCopies} copies of '{removeTitle}'.");                
+                Console.WriteLine($"Successfully removed {removeNumCopies} copies of '{removeTitle}'.");
             }
             else
             {
@@ -194,8 +194,6 @@ public class LibrarySystem
             break; // Exit the loop since a valid operation was performed
         }
     }
-
-
 
     private void RegisterNewMember()
     {
