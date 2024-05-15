@@ -56,15 +56,11 @@ public class LibrarySystem
         if (username == "staff" && password == "today123")
         {
             Console.WriteLine("\nStaff login successful!");
-            Thread.Sleep(2000);
-            Console.Clear();
             StaffMenu();
         }
         else
         {
             Console.WriteLine("\nInvalid username or password.");
-            Thread.Sleep(2000);
-            Console.Clear();
         }
     }
 

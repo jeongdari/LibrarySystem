@@ -1,13 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "AjKewNgrsLZwdEhgOcH1NQDIu421wyi+G0L9kPW2GypcPTMhrbVG+N22LlMZgGi5zTrQ3izrXuI/JlWdCMWQ4A==",
+  "dgSpecHash": "OjI7CbFSsRyorj6xL35CjhPNZCepzR4cFYhQ4DNWmdOEnFVJWtYyWxwJ93/7BeVgq3w2080O0xW77SqLTkh4Lg==",
   "success": true,
   "projectFilePath": "/Users/danny/Desktop/LibrarySystem/LibraryManagementSystem.csproj",
   "expectedPackageFiles": [
-    "/Users/danny/.nuget/packages/consoletables/2.6.1/consoletables.2.6.1.nupkg.sha512",
-    "/Users/danny/.nuget/packages/microsoft.netcore.app.ref/7.0.18/microsoft.netcore.app.ref.7.0.18.nupkg.sha512",
-    "/Users/danny/.nuget/packages/microsoft.aspnetcore.app.ref/7.0.18/microsoft.aspnetcore.app.ref.7.0.18.nupkg.sha512",
-    "/Users/danny/.nuget/packages/microsoft.netcore.app.host.osx-arm64/7.0.18/microsoft.netcore.app.host.osx-arm64.7.0.18.nupkg.sha512"
+    "/Users/danny/.nuget/packages/consoletables/2.6.1/consoletables.2.6.1.nupkg.sha512"
   ],
   "logs": []
 }

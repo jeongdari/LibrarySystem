@@ -139,17 +139,24 @@ public class MovieCollection
     public void DisplayAllMovies()
     {
         Console.WriteLine("Movies currently available:");
-        var table = new ConsoleTable("Title", "Genre", "Classification", "Copies Available");
 
-        foreach (var movieList in hashTable.Where(list => list != null))
+        var allMovies = hashTable.SelectMany(list => list ?? Enumerable.Empty<Movie>())
+                                 .OrderBy(movie => movie.Title);
+
+        if (!allMovies.Any())
         {
-            foreach (var movie in movieList)
-            {
-                table.AddRow(movie.Title, movie.MovieGenre, movie.MovieClassification, movie.CopiesAvailable);
-            }
+            Console.WriteLine("No movies found in the library.");
+            return;
+        }
+
+        var table = new ConsoleTable("Title", "Genre", "Classification", "Copies Available");
+        foreach (var movie in allMovies)
+        {
+            table.AddRow(movie.Title, movie.MovieGenre, movie.MovieClassification, movie.CopiesAvailable);
         }
         table.Write(Format.Default);
     }
+
 
     public void DisplayMovieInfo(string title)
     {
@@ -162,7 +169,7 @@ public class MovieCollection
         if (movie != null)
         {
             // Display movie information in a formatted table
-            var table = new ConsoleTable("Title", "Genre", "Classification", "Duration\n(minutes)", "Copies\nAvailable", "Times\nBorrowed");
+            var table = new ConsoleTable("Title", "Genre", "Classification", "Duration (minutes)", "Copies Available", "Times Borrowed");
             table.AddRow(movie.Title, movie.MovieGenre, movie.MovieClassification, movie.DurationMinutes, movie.CopiesAvailable, movie.TimesBorrowed);
             table.Write(Format.Default);
         }
@@ -232,10 +239,6 @@ public class MovieCollection
             return movieToBorrow; // Return the borrowed movie
         }
     }
-
-
-
-
     public void ReturnMovie(Movie movie)
     {
         int hash = CalculateHash(movie.Title);
